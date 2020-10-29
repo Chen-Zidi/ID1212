@@ -1,4 +1,4 @@
-package ChatApplication;
+package Task1;
 
 import java.io.*;
 import java.net.DatagramPacket;
