@@ -6,36 +6,39 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 
+@SuppressWarnings("InfiniteLoopStatement")
 public class ChatServer {
-    public static void main(String[] args) throws Exception{
-        int port = 8089;
-        ServerSocket serverSocket = new ServerSocket(port);
-        Socket socket = null;
+    public static void main(String[] args) throws Exception {
+        final int PORT = 8089;
+        ServerSocket serverSocket = new ServerSocket(PORT);
+        Socket socket;
 
         //all the clients address
-        ArrayList<InetAddress> clientsList= new ArrayList<InetAddress>();
+        ArrayList<InetAddress> clientsAddress = new ArrayList<>();
         //store all the server threads
-        ArrayList<ServerThread> serversList = new ArrayList<ServerThread>();
+        ArrayList<ServerThread> serverThreads = new ArrayList<>();
 
         System.out.println("Server starts.");
 
         //listen to the clients who want connection
         while (true) {
-            socket = serverSocket.accept();
-            InetAddress inetAddress=socket.getInetAddress();
-            clientsList.add(inetAddress);
+            try {
+                socket = serverSocket.accept();
+                InetAddress inetAddress = socket.getInetAddress();
+                clientsAddress.add(inetAddress);
 
-            //generate a new server thread for the client
-            ServerThread thread=new ServerThread(socket,inetAddress);
-            serversList.add(thread);
+                //generate a new server thread for the client
+                ServerThread thread = new ServerThread(socket, inetAddress);
+                serverThreads.add(thread);
 
-            //update all the server threads with a new client list
-            for(ServerThread t:serversList){
-                t.updateClients(clientsList);
+                //update all the server threads with a new client list
+                for (ServerThread t : serverThreads) {
+                    t.updateClients(clientsAddress);
+                }
+                thread.start();
+            } catch (Exception e) {
+                System.out.println(e.toString());
             }
-            thread.start();
-
-
         }
 
     }

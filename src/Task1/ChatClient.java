@@ -4,9 +4,11 @@ import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Scanner;
 
+@SuppressWarnings("InfiniteLoopStatement")
 public class ChatClient {
     public static void main(String[] args) throws Exception{
 
@@ -25,7 +27,7 @@ public class ChatClient {
 
         //output the string to the server
         OutputStream outputStream = socket.getOutputStream();
-        OutputStreamWriter writer = new OutputStreamWriter(outputStream, "UTF-8");
+        OutputStreamWriter writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
         writer.write(message);
         writer.flush();
         socket.shutdownOutput();
@@ -51,12 +53,16 @@ public class ChatClient {
         DatagramPacket receivedMsg = new DatagramPacket(new byte[1024], 1024);
         DatagramSocket ds = new DatagramSocket(8888);
         while (true) {
-            ds.receive(receivedMsg);
+            try {
+                ds.receive(receivedMsg);
 
-            byte[] receivedBytes = Arrays.copyOfRange(receivedMsg.getData(), 0,
-                    receivedMsg.getLength());
+                byte[] receivedBytes = Arrays.copyOfRange(receivedMsg.getData(), 0,
+                        receivedMsg.getLength());
 
-            System.out.println("Server:" + new String(receivedBytes));
+                System.out.println("Server:" + new String(receivedBytes));
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
         }
 
 
