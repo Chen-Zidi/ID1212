@@ -22,25 +22,25 @@ public class ClientThread extends Thread {
             //output the string to the server
             OutputStream outputStream = socket.getOutputStream();
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
-            BufferedWriter writer;
+            BufferedWriter writer= new BufferedWriter(outputStreamWriter);
             Scanner scanner = new Scanner(System.in);
             while (true) {
-                writer = new BufferedWriter(outputStreamWriter);
                 //ask for user input
                 System.out.print("Message: ");
                 if (scanner.hasNextLine()) {
-                    message = scanner.nextLine();
-                } else
-                    continue;
-                //Exit Command
-                if (message.equals("/exit"))
-                    break;
-
-                writer.write(message);
-                writer.flush();
-                outputStream.flush();
+                    message = scanner.nextLine() + "\n";
+                    writer.write(message);
+                    writer.flush();
+                    outputStream.flush();
+                    //Exit Command
+                    if (message.equals("/exit")){
+                        System.out.println("Byebye!");
+                        break;
+                    }
+                }
             }
             scanner.close();
+            writer.close();
             socket.close();
         } catch (Exception e) {
             e.printStackTrace();

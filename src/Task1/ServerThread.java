@@ -24,25 +24,20 @@ public class ServerThread extends Thread {
         BufferedReader bufferedReader;//for input stream
         //OutputStream outputStream = null;
         //OutputStreamWriter writer = null;
-        StringBuilder message;
         try {
-
             inputStream = socket.getInputStream();
-
-            message = new StringBuilder();
             //get the message from the client
             inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
             bufferedReader = new BufferedReader(inputStreamReader);
             String text;
             while ((text = bufferedReader.readLine()) != null) {
-                message.append(text);
-                System.out.println("Client" + socket.getInetAddress() + ": " + text);
                 if (text.toString().equals("/exit")) {
                     bufferedReader.close();
                     inputStream.close();
                     inputStreamReader.close();
                     socket.close();
                 }
+                System.out.println("Client" + socket.getInetAddress() + ": " + text);
             }
             //If client command exit, then stop the thread
 
