@@ -7,15 +7,18 @@ import java.util.ArrayList;
 
 @SuppressWarnings("InfiniteLoopStatement")
 public class ChatServer {
+
+    //store all the server threads
+    private static final ArrayList<ServerThread> serverThreads = new ArrayList<>();
+
+    public static ArrayList<ServerThread> getServerThreads() {
+        return serverThreads;
+    }
+
     public static void main(String[] args) throws Exception {
         final int PORT = 8089;
         ServerSocket serverSocket = new ServerSocket(PORT);
         Socket socket;
-
-//        //all the clients address
-//        ArrayList<InetAddress> clientsAddress = new ArrayList<>();
-        //store all the server threads
-        ArrayList<ServerThread> serverThreads = new ArrayList<>();
 
         System.out.println("Server starts.");
 
@@ -28,10 +31,6 @@ public class ChatServer {
                 ServerThread thread = new ServerThread(socket);
                 serverThreads.add(thread);
 
-                //update all the server threads with a new client list
-//                for (ServerThread t : serverThreads) {
-//                    t.updateClients(clientsAddress);
-//                }
                 thread.start();
             } catch (Exception e) {
                 e.printStackTrace();
