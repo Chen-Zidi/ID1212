@@ -1,6 +1,5 @@
 package Task1;
 
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -13,8 +12,8 @@ public class ChatServer {
         ServerSocket serverSocket = new ServerSocket(PORT);
         Socket socket;
 
-        //all the clients address
-        ArrayList<InetAddress> clientsAddress = new ArrayList<>();
+//        //all the clients address
+//        ArrayList<InetAddress> clientsAddress = new ArrayList<>();
         //store all the server threads
         ArrayList<ServerThread> serverThreads = new ArrayList<>();
 
@@ -24,20 +23,18 @@ public class ChatServer {
         while (true) {
             try {
                 socket = serverSocket.accept();
-                InetAddress inetAddress = socket.getInetAddress();
-                clientsAddress.add(inetAddress);
 
                 //generate a new server thread for the client
-                ServerThread thread = new ServerThread(socket, inetAddress);
+                ServerThread thread = new ServerThread(socket);
                 serverThreads.add(thread);
 
                 //update all the server threads with a new client list
-                for (ServerThread t : serverThreads) {
-                    t.updateClients(clientsAddress);
-                }
+//                for (ServerThread t : serverThreads) {
+//                    t.updateClients(clientsAddress);
+//                }
                 thread.start();
             } catch (Exception e) {
-                System.out.println(e.toString());
+                e.printStackTrace();
             }
         }
 

@@ -1,19 +1,20 @@
 package Task1;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
+@SuppressWarnings("ALL")
 public class ServerThread extends Thread {
     Socket socket;
-    InetAddress inetAddress;
-    ArrayList<InetAddress> clients = null;
+//    ArrayList<InetAddress> clients = null;
 
     //constructor
-    public ServerThread(Socket socket, InetAddress inetAddress) {
+    public ServerThread(Socket socket) {
         this.socket = socket;
-        this.inetAddress = inetAddress;
     }
 
     @Override
@@ -23,20 +24,27 @@ public class ServerThread extends Thread {
         BufferedReader bufferedReader;//for input stream
         //OutputStream outputStream = null;
         //OutputStreamWriter writer = null;
-        StringBuilder message = new StringBuilder();
-
+        StringBuilder message;
         try {
-            //get the message from the client
+
             inputStream = socket.getInputStream();
+
+            message = new StringBuilder();
+            //get the message from the client
             inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
             bufferedReader = new BufferedReader(inputStreamReader);
             String text;
             while ((text = bufferedReader.readLine()) != null) {
                 message.append(text);
-
+                System.out.println("Client" + socket.getInetAddress() + ": " + text);
+                if (text.toString().equals("/exit")) {
+                    bufferedReader.close();
+                    inputStream.close();
+                    inputStreamReader.close();
+                    socket.close();
+                }
             }
-            System.out.println("Client<" + inetAddress + ">: " + message);
-            socket.shutdownInput();
+            //If client command exit, then stop the thread
 
 
             //outputStream = socket.getOutputStream();
@@ -46,22 +54,17 @@ public class ServerThread extends Thread {
 
             //broadcast the received message to all the clients using datagram(UDP)
             //maybe I can use TCP by informing other server threads, but I am not sure how to do it
-            for (InetAddress addr : clients) {
-                byte[] msg = message.toString().getBytes();
-                DatagramSocket dgs = new DatagramSocket();
-                DatagramPacket sendPack = new DatagramPacket(msg, msg.length, addr, 8888);
-                dgs.send(sendPack);
-                //System.out.println("server broad cast message");
-                dgs.close();
-            }
-
+//            for (InetAddress addr : clients) {
+//                byte[] msg = message.toString().getBytes();
+//                DatagramSocket dgs = new DatagramSocket();
+//                DatagramPacket sendPack = new DatagramPacket(msg, msg.length, addr, 8888);
+//                dgs.send(sendPack);
+//                //System.out.println("server broad cast message");
+//                dgs.close();
+//            }
 
             //writer.close();
             //outputStream.close();
-            bufferedReader.close();
-            inputStream.close();
-            inputStreamReader.close();
-            socket.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -70,9 +73,8 @@ public class ServerThread extends Thread {
     }
 
     //update all the client list
-    public void updateClients(ArrayList<InetAddress> clients) {
-        this.clients = clients;
-    }
-
+//    public void updateClients(ArrayList<InetAddress> clients) {
+//        this.clients = clients;
+//    }
 
 }
