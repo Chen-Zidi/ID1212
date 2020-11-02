@@ -46,15 +46,17 @@ public class ServerThread extends Thread {
 
     public void broadcast(String text) throws IOException {
         BufferedWriter writer;
-
+        OutputStream stream;
         for (ServerThread t : ChatServer.getServerThreads()) {
             //Do not send the message to self.
             if (t.equals(this))
                 continue;
+            stream = t.socket.getOutputStream();
             writer = new BufferedWriter(new OutputStreamWriter(
-                    t.socket.getOutputStream(), StandardCharsets.UTF_8));
+                    stream, StandardCharsets.UTF_8));
             writer.write(text);
             writer.flush();
+            stream.flush();
         }
     }
 }
