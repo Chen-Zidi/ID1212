@@ -1,6 +1,5 @@
 package Task1;
 
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -8,36 +7,34 @@ import java.util.ArrayList;
 
 @SuppressWarnings("InfiniteLoopStatement")
 public class ChatServer {
+
+    //store all the server threads
+    private static final ArrayList<ServerThread> serverThreads = new ArrayList<>();
+
+    public static ArrayList<ServerThread> getServerThreads() {
+        return serverThreads;
+    }
+
     public static void main(String[] args) throws Exception {
         final int PORT = 8089;
         ServerSocket serverSocket = new ServerSocket(PORT);
-        Socket socket;
-
-        //all the clients address
-        ArrayList<InetAddress> clientsAddress = new ArrayList<>();
-        //store all the server threads
-        ArrayList<ServerThread> serverThreads = new ArrayList<>();
-
+        Socket socket = null;
+        ServerThread thread = null;
         System.out.println("Server starts.");
 
         //listen to the clients who want connection
         while (true) {
             try {
                 socket = serverSocket.accept();
-                InetAddress inetAddress = socket.getInetAddress();
-                clientsAddress.add(inetAddress);
 
                 //generate a new server thread for the client
-                ServerThread thread = new ServerThread(socket, inetAddress);
+                thread = new ServerThread(socket);
                 serverThreads.add(thread);
 
-                //update all the server threads with a new client list
-                for (ServerThread t : serverThreads) {
-                    t.updateClients(clientsAddress);
-                }
                 thread.start();
             } catch (Exception e) {
-                System.out.println(e.toString());
+                serverThreads.remove(thread);
+                System.out.println((socket != null ? socket.getInetAddress() : null) + " closed");
             }
         }
 
