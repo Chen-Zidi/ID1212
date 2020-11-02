@@ -33,15 +33,15 @@ public class ClientThread extends Thread {
                     writer.flush();
                     outputStream.flush();
                     //Exit Command
-                    if (message.equals("/exit")) {
-                        System.out.println("Byebye!");
-                        break;
+                    if (message.equals("/exit\n")) {
+                        System.out.println("Bye bye!");
+                        scanner.close();
+                        writer.close();
+                        socket.close();
+                        return;
                     }
                 }
             }
-            scanner.close();
-            writer.close();
-            socket.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

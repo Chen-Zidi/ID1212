@@ -18,8 +18,8 @@ public class ChatServer {
     public static void main(String[] args) throws Exception {
         final int PORT = 8089;
         ServerSocket serverSocket = new ServerSocket(PORT);
-        Socket socket;
-
+        Socket socket = null;
+        ServerThread thread = null;
         System.out.println("Server starts.");
 
         //listen to the clients who want connection
@@ -28,12 +28,13 @@ public class ChatServer {
                 socket = serverSocket.accept();
 
                 //generate a new server thread for the client
-                ServerThread thread = new ServerThread(socket);
+                thread = new ServerThread(socket);
                 serverThreads.add(thread);
 
                 thread.start();
             } catch (Exception e) {
-                e.printStackTrace();
+                serverThreads.remove(thread);
+                System.out.println((socket != null ? socket.getInetAddress() : null) + " closed");
             }
         }
 

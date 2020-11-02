@@ -3,6 +3,7 @@ package Task1;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class ChatClient {
     public static void main(String[] args) throws Exception {
@@ -18,8 +19,12 @@ public class ChatClient {
 
         String text;
         //Print the input messages
-        while ((text = bufferedReader.readLine()) != null) {
-            System.out.println(text);
+        try {
+            while ((text = bufferedReader.readLine()) != null) {
+                System.out.println(text);
+            }
+        } catch (SocketException e) {
+            System.out.println("System: Sockect closed");
         }
     }
 }
