@@ -9,8 +9,9 @@ public class Guess {
     private int counter;
 
     public Guess(){
-        number = new Random().nextInt(99) + 1;
-        counter = 0 ;
+        //this.number = (int)(Math.random()*100);
+        this.number = new Random().nextInt(99) + 1;
+        this.counter = 0 ;
     }
 
     public Guess(int number, int counter) {
