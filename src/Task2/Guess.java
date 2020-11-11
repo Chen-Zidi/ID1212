@@ -1,14 +1,21 @@
 package Task2;
 
+import java.util.Random;
+
 public class Guess {
 
 
-    int number;
-    int counter;
+    private final int number;
+    private int counter;
 
     public Guess(){
-        number = (int) (Math.random() * 100 + 1);
-        counter = 0;
+        number = new Random().nextInt(99) + 1;
+        counter = 0 ;
+    }
+
+    public Guess(int number, int counter) {
+        this.number = number;
+        this.counter = counter;
     }
 
     public String compare(int i){
@@ -19,15 +26,17 @@ public class Guess {
             return "equal";
         }
         return "lower";
+    }
 
+    public int getNumber() {
+        return number;
     }
 
     public int getCounter() {
         return counter;
     }
 
-    public void setCounter(int counter) {
-        this.counter = counter;
+    public void count() {
+        counter++;
     }
-
 }
