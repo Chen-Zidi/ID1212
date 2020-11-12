@@ -19,6 +19,7 @@ public class ServerThread extends Thread {
     String requestedDocument = "";
     int id;
 
+
     public ServerThread(Socket socket, int id) {
         this.socket = socket;
         this.id = id;
@@ -118,47 +119,71 @@ public class ServerThread extends Thread {
                 String result = guess.compare(guessNumber);
                 if(result.equals("equal")){//if the guess number is right
                     fileReader = new FileReader("./src/Task2/GuessRight.html");
+                    BufferedReader bufferedReader = new BufferedReader(fileReader);
+                    while(bufferedReader.ready()){
+                        htmlContent += bufferedReader.readLine();
+                    }
+
+                    //inject the number to the html
+                    htmlContent = String.format(htmlContent,guess.getCounter(),guess.getNumber());
+                    fileReader.close();
+
+                    //reset the guess number and counter
+                    guess = new Guess();
+
                 }else if(result.equals("higher")){//if the gues number is higher
                     fileReader = new FileReader("./src/Task2/GuessHigher.html");
+                    BufferedReader bufferedReader = new BufferedReader(fileReader);
+                    while(bufferedReader.ready()){
+                        htmlContent += bufferedReader.readLine();
+                    }
+
+                    //inject the number to the html
+                    htmlContent = String.format(htmlContent,guess.getCounter(),guess.getNumber());
+                    fileReader.close();
+
                 }else{//if the guess number is lower
                     fileReader = new FileReader("./src/Task2/GuessLower.html");
+                    BufferedReader bufferedReader = new BufferedReader(fileReader);
+                    while(bufferedReader.ready()){
+                        htmlContent += bufferedReader.readLine();
+                    }
+
+                    //inject the number to the html
+                    htmlContent = String.format(htmlContent,guess.getCounter(),guess.getNumber());
+                    fileReader.close();
                 }
 
-                BufferedReader bufferedReader = new BufferedReader(fileReader);
-                while(bufferedReader.ready()){
-                    htmlContent += bufferedReader.readLine();
-                }
 
-                //inject the number to the html
-                htmlContent = String.format(htmlContent,guess.getCounter(),guess.getNumber());
-                fileReader.close();
             }
 
 
+                //write the response to the client with cookie number and count
+            String  page="HTTP/1.1 200 OK\r\n"+
+                        "Content-Length: "+htmlContent.getBytes().length+"\r\n"+
+                        "Content-Type: text/html; charset-utf-8\r\n"+
+                        "Set-Cookie: number="+guess.getNumber()+"\r\n"+
+                        "Set-Cookie: count="+guess.getCounter()+"\r\n"+
+                        "Set-Cookie: id="+id+"\r\n"+
+                        //"<link rel=\"shortcut icon\" href=\"./favicon.ico\">"+"\r\n"+
+                        //"Link: <http://foo.com/favicon.ico>; rel=\"shortcut icon\""+"\r\n"+
+                        "\r\n"+htmlContent+"\r\n";
 
-            //write the response to the client
-            String page="HTTP/1.1 200 OK\r\n"+
-                    "Content-Length: "+htmlContent.getBytes().length+"\r\n"+
-                    "Content-Type: text/html; charset-utf-8\r\n"+
-                    "Set-Cookie: number="+guess.getNumber()+"\r\n"+
-                    "Set-Cookie: count="+guess.getCounter()+"\r\n"+
-                    "Set-Cookie: id="+id+"\r\n"+
-                    //"<link rel=\"shortcut icon\" href=\"./favicon.ico\">"+"\r\n"+
-                    //"Link: <http://foo.com/favicon.ico>; rel=\"shortcut icon\""+"\r\n"+
-                    "\r\n"+htmlContent+"\r\n";
+
+
 
             //tried to give favicon
             //need to fix
-            if(requestedDocument.equals("/favicon.ico")){
-                page += "\r\n";
-                File f = new File("./src/Task2"+requestedDocument);
-                FileInputStream infil = new FileInputStream(f);
-                byte[] b = new byte[1024];
-                while( infil.available() > 0){
-                    //response.write(b,0,infil.read(b));
-                    page += infil.read(b);
-                }
-            }
+//            if(requestedDocument.equals("/favicon.ico")){
+//                page += "\r\n";
+//                File f = new File("./src/Task2"+requestedDocument);
+//                FileInputStream infil = new FileInputStream(f);
+//                byte[] b = new byte[1024];
+//                while( infil.available() > 0){
+//                    //response.write(b,0,infil.read(b));
+//                    page += infil.read(b);
+//                }
+//            }
 
             //send the response
             outputStream.write(page.getBytes());
