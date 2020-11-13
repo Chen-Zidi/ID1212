@@ -82,7 +82,7 @@ public class ServerThread extends Thread {
             //the while loop always results in print an empty line
             //this empty line is the line between http header and http body
             if(method.equals("POST") && contentLength > 0){
-
+                System.out.println("POST received");
                 char[] content = new char[contentLength];
                 request.read(content);
                 String temp = new String(content);
@@ -159,15 +159,23 @@ public class ServerThread extends Thread {
 
 
                 //write the response to the client with cookie number and count
+//            String  page="HTTP/1.1 200 OK\r\n"+
+//                        "Content-Length: "+htmlContent.getBytes().length+"\r\n"+
+//                        "Content-Type: text/html; charset-utf-8\r\n"+
+//                        "Set-Cookie: number="+guess.getNumber()+"\r\n; count="+guess.getCounter()+"\r\n; id="+id+"\r\n"+
+//                        //"<link rel=\"shortcut icon\" href=\"./favicon.ico\">"+"\r\n"+
+//                        //"Link: <http://foo.com/favicon.ico>; rel=\"shortcut icon\""+"\r\n"+
+//                        "\r\n"+htmlContent+"\r\n";
+
             String  page="HTTP/1.1 200 OK\r\n"+
-                        "Content-Length: "+htmlContent.getBytes().length+"\r\n"+
-                        "Content-Type: text/html; charset-utf-8\r\n"+
-                        "Set-Cookie: number="+guess.getNumber()+"\r\n"+
-                        "Set-Cookie: count="+guess.getCounter()+"\r\n"+
-                        "Set-Cookie: id="+id+"\r\n"+
-                        //"<link rel=\"shortcut icon\" href=\"./favicon.ico\">"+"\r\n"+
-                        //"Link: <http://foo.com/favicon.ico>; rel=\"shortcut icon\""+"\r\n"+
-                        "\r\n"+htmlContent+"\r\n";
+                    "Content-Length: "+htmlContent.getBytes().length+"\r\n"+
+                    "Content-Type: text/html; charset-utf-8\r\n"+
+                    "Set-Cookie: number="+guess.getNumber()+"\r\n"+
+                    "Set-Cookie: count="+guess.getCounter()+"\r\n"+
+                    "Set-Cookie: id="+id+"\r\n"+
+                    //"<link rel=\"shortcut icon\" href=\"./favicon.ico\">"+"\r\n"+
+                    //"Link: <http://foo.com/favicon.ico>; rel=\"shortcut icon\""+"\r\n"+
+                    "\r\n"+htmlContent+"\r\n";
 
 
 
