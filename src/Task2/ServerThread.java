@@ -37,10 +37,11 @@ public class ServerThread extends Thread {
             request = new BufferedReader(new InputStreamReader(inputStream));
             String str = request.readLine();
 
+            // If this is a favicon request from browser
             if (str.contains("favicon.ico")) {
-                //Read favicon.ico to byte
+                //Read favicon.ico to bytes
                 byte[] favicon = Files.readAllBytes(Paths.get("src", "Task2", "favicon.ico"));
-                String header = "HTTP/1.1 200 OK\nAccess-Control-Allow-Origin: *\nContent-Type: image/png\nContent-Length: " + favicon.length + "\r\n\r\n";
+                String header = "HTTP/1.1 200 OK\nAccess-Control-Allow-Origin: *\nContent-Type: image/ico\nContent-Length: " + favicon.length + "\r\n\r\n";
                 outputStream.write(header.getBytes(StandardCharsets.UTF_8));
                 outputStream.write(favicon);
             }
@@ -68,15 +69,15 @@ public class ServerThread extends Thread {
                 //to get cookie values
                 if (str.contains("Cookie")) {
                     String[] cInfo = str.split(":|;");
-                    for (int i = 0; i < cInfo.length; i++) {
+                    for (String s : cInfo) {
                         //get count value
-                        if (cInfo[i].contains("count")) {
-                            count = Integer.parseInt(cInfo[i].replaceAll("count=", "").trim());
+                        if (s.contains("count")) {
+                            count = Integer.parseInt(s.replaceAll("count=", "").trim());
                             //System.out.println("count"+count);
                         }
                         //get number value
-                        if (cInfo[i].contains("number")) {
-                            number = Integer.parseInt(cInfo[i].replaceAll("number=", "").trim());
+                        if (s.contains("number")) {
+                            number = Integer.parseInt(s.replaceAll("number=", "").trim());
                             //System.out.println("number"+number);
                         }
 
@@ -170,37 +171,13 @@ public class ServerThread extends Thread {
 
 
             //write the response to the client with cookie number and count
-//            String  page="HTTP/1.1 200 OK\r\n"+
-//                        "Content-Length: "+htmlContent.getBytes().length+"\r\n"+
-//                        "Content-Type: text/html; charset-utf-8\r\n"+
-//                        "Set-Cookie: number="+guess.getNumber()+"\r\n; count="+guess.getCounter()+"\r\n; id="+id+"\r\n"+
-//                        //"<link rel=\"shortcut icon\" href=\"./favicon.ico\">"+"\r\n"+
-//                        //"Link: <http://foo.com/favicon.ico>; rel=\"shortcut icon\""+"\r\n"+
-//                        "\r\n"+htmlContent+"\r\n";
-
             String page = "HTTP/1.1 200 OK\r\n" +
                     "Content-Length: " + htmlContent.getBytes().length + "\r\n" +
                     "Content-Type: text/html; charset-utf-8\r\n" +
                     "Set-Cookie: number=" + guess.getNumber() + "\r\n" +
                     "Set-Cookie: count=" + guess.getCounter() + "\r\n" +
                     "Set-Cookie: id=" + id + "\r\n" +
-                    //"<link rel=\"shortcut icon\" href=\"./favicon.ico\">"+"\r\n"+
-                    //"Link: <http://foo.com/favicon.ico>; rel=\"shortcut icon\""+"\r\n"+
                     "\r\n" + htmlContent + "\r\n";
-
-
-            //tried to give favicon
-            //need to fix
-//            if(requestedDocument.equals("/favicon.ico")){
-//                page += "\r\n";
-//                File f = new File("./src/Task2"+requestedDocument);
-//                FileInputStream infil = new FileInputStream(f);
-//                byte[] b = new byte[1024];
-//                while( infil.available() > 0){
-//                    //response.write(b,0,infil.read(b));
-//                    page += infil.read(b);
-//                }
-//            }
 
             //send the response
             outputStream.write(page.getBytes());

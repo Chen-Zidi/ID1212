@@ -71,7 +71,7 @@ public class SimulateClient {
     }
 
     //send get request
-    public static String getRequest(URL url, int[] array) throws Exception {
+    public static void getRequest(URL url, int[] array) throws Exception {
         //System.out.println("Get Request");
         String result = "";
         Map<String, List<String>> header;
@@ -116,7 +116,6 @@ public class SimulateClient {
         connection.disconnect();
 
         System.out.println(result);
-        return result;
     }
 
     //send post request
