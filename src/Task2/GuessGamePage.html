@@ -1,24 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+<link rel="shortcut icon" href="favicon.ico?" type="image/x-icon"/>
 <head>
-
     <meta charset="UTF-8">
     <title>Number Guess Game</title>
-<!--    <link rel="icon"-->
-<!--          type="image/ico"-->
-<!--          href="./src/Task2.favicon.ico" />-->
-
 </head>
 <body>
-<!--<img src="../Task2.favicon.ico" alt="Girl in a jacket">-->
-<p>Welcome to the number guess game!  cheat: %s </p>
+<p>Welcome to the number guess game! cheat: %s </p>
 <p>I'm thinking of a number between 1 and 100.</p>
-<table>
+<form method="POST" enctype="application/x-www-form-urlencoded">
     Whats your guess?
-    <form method="POST" enctype="application/x-www-form-urlencoded">
-        <input type="number" name="number" />
-        <input type="submit">
-    </form>
-</table>
+    <label>
+        <input type="number" name="number"/>
+    </label>
+    <input type="submit">
+</form>
 </body>
 </html>

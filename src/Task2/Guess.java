@@ -8,10 +8,10 @@ public class Guess {
     private final int number;
     private int counter;
 
-    public Guess(){
+    public Guess() {
         //this.number = (int)(Math.random()*100);
         this.number = new Random().nextInt(99) + 1;
-        this.counter = 0 ;
+        this.counter = 0;
     }
 
     public Guess(int number, int counter) {
@@ -19,11 +19,11 @@ public class Guess {
         this.counter = counter;
     }
 
-    public String compare(int i){
-        counter ++;
-        if(i > number){
+    public String compare(int i) {
+        counter++;
+        if (i > number) {
             return "higher";
-        }else if(i == number){
+        } else if (i == number) {
             return "equal";
         }
         return "lower";
