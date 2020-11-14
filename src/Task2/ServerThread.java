@@ -58,7 +58,7 @@ public class ServerThread extends Thread {
             System.out.println(requestedDocument);
 
             //read http request
-            while (true) {
+            do {
                 str = request.readLine();
                 System.out.println("str: " + str);
 
@@ -84,11 +84,7 @@ public class ServerThread extends Thread {
                     }
 
                 }
-
-                if (str.length() == 0) {
-                    break;
-                }
-            }
+            } while (str.length() != 0);
 
             //if method is post, then find the submitted value in the http body
             //the while loop always results in print an empty line
