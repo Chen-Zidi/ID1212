@@ -10,7 +10,6 @@ import java.util.StringTokenizer;
 public class ServerThread extends Thread {
     Socket socket;
     Guess guess;
-    String cookieInfo = "";
     BufferedReader request;
     int count = -1;
     int number = -1;
@@ -40,7 +39,7 @@ public class ServerThread extends Thread {
             // If this is a favicon request from browser
             if (str.contains("favicon.ico")) {
                 //Read favicon.ico to bytes
-                byte[] favicon = Files.readAllBytes(Paths.get("src", "Task2", "favicon.ico"));
+                byte[] favicon = Files.readAllBytes(Paths.get("tasks", "Task2", "favicon.ico"));
                 String header = "HTTP/1.1 200 OK\nAccess-Control-Allow-Origin: *\nContent-Type: image/ico\nContent-Length: " + favicon.length + "\r\n\r\n";
                 outputStream.write(header.getBytes(StandardCharsets.UTF_8));
                 outputStream.write(favicon);
@@ -109,7 +108,7 @@ public class ServerThread extends Thread {
             //if it is a get request, give the start page
             if (method.equals("GET")) {
                 //read the html file
-                FileReader fileReader = new FileReader("./src/Task2/GuessGamePage.html");
+                FileReader fileReader = new FileReader("./tasks/Task2/GuessGamePage.html");
                 BufferedReader bufferedReader = new BufferedReader(fileReader);
                 while (bufferedReader.ready()) {
                     htmlContent += bufferedReader.readLine();
@@ -126,7 +125,7 @@ public class ServerThread extends Thread {
                 FileReader fileReader;
                 String result = guess.compare(guessNumber);
                 if (result.equals("equal")) {//if the guess number is right
-                    fileReader = new FileReader("./src/Task2/GuessRight.html");
+                    fileReader = new FileReader("./tasks/Task2/GuessRight.html");
                     BufferedReader bufferedReader = new BufferedReader(fileReader);
                     while (bufferedReader.ready()) {
                         htmlContent += bufferedReader.readLine();
@@ -140,7 +139,7 @@ public class ServerThread extends Thread {
                     guess = new Guess();
 
                 } else if (result.equals("higher")) {//if the gues number is higher
-                    fileReader = new FileReader("./src/Task2/GuessHigher.html");
+                    fileReader = new FileReader("./tasks/Task2/GuessHigher.html");
                     BufferedReader bufferedReader = new BufferedReader(fileReader);
                     while (bufferedReader.ready()) {
                         htmlContent += bufferedReader.readLine();
@@ -151,7 +150,7 @@ public class ServerThread extends Thread {
                     fileReader.close();
 
                 } else {//if the guess number is lower
-                    fileReader = new FileReader("./src/Task2/GuessLower.html");
+                    fileReader = new FileReader("./tasks/Task2/GuessLower.html");
                     BufferedReader bufferedReader = new BufferedReader(fileReader);
                     while (bufferedReader.ready()) {
                         htmlContent += bufferedReader.readLine();
