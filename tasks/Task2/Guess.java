@@ -1,5 +1,3 @@
-package Task2;
-
 import java.util.Random;
 
 public class Guess {
