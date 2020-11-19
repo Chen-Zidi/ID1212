@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Task3:Web exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/Task3_Web_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="Task3/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="javaee-facet-classes" facet="Task3/web/Web" />
+          <element id="jpa-descriptors" facet="Task3/jpa/JPA" />
+          <element id="module-output" name="Task3" />
+        </element>
+        <element id="directory" name="lib" />
+      </element>
+    </root>
+  </artifact>
+</component>

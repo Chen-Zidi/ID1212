@@ -13,3 +13,9 @@ Netbeans/Tomcat/mySQL is the only environment we are supporting during labs. Tha
 ##Extra assignment
 Add an additional admin interface where questions more questions can be added. All questions should be mirrored in a mySQL-database with JPA.
 
+##Recommend Websites
+1. https://www.jianshu.com/p/4a4410075bab (JPQL)
+2. https://www.vogella.com/tutorials/JavaPersistenceAPI/article.html#simple (EclipseLink,JPA)
+3. https://www.runoob.com/jsp/eclipse-jsp.html (JSP)
+4. https://www.jianshu.com/p/9d0a657a45fa (JSP+Servlet+JavaBean)
+5. https://geek-docs.com/java/java-tutorial/eclipselink.html (EclipseLink)
