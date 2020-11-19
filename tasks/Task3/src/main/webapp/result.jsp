@@ -25,7 +25,7 @@
 <table align="center" width="600" border="1" height="550" bordercolor="#E8F4CC">
     <tr>
         <td align="center" colspan="2">
-            <span style="font-weight: bold;font-size: 18px;"><%=user.getUsername()%></span>登录成功！
+            <span style="font-weight: bold;font-size: 18px;"><%=user.getUsername()%></span>Login Successful！
         </td>
     </tr>
     <tr>

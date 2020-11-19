@@ -13,5 +13,6 @@
             <input type="submit" value="Login">
             <input type="reset" value="Reset">
         </form>
+        <a href="register.jsp">Are you new? Click to register!</a>
     </body>
 </html>
