@@ -12,13 +12,13 @@
 </head>
 <body>
 <%
-    //获取提示信息
+    //get information
     String info = (String) request.getAttribute("info");
     if (info != null) {
         out.print(info);
     }
 
-    /*获取用户的登录信息*/
+   //get user session information
     User user = (User) session.getAttribute("user");
     if (user != null) {
 %>

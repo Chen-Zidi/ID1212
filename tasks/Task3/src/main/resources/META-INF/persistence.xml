@@ -4,7 +4,7 @@
     version="2.2">
     <persistence-unit name="project">
         <class>bean.User</class>
-
+        <class>bean.Question</class>
         <properties>
             <property name="eclipselink.target-database" value="MySQL"/>
             <property name="javax.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver" />
@@ -15,6 +15,7 @@
 
             <!-- EclipseLink should create the database schema automatically -->
             <property name="eclipselink.ddl-generation" value="create-tables" />
+<!--            <property name="eclipselink.ddl-generation.output-mode" value="database" />-->
         </properties>
     </persistence-unit>
 </persistence>

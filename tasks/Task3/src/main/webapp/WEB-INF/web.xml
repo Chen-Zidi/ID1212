@@ -23,4 +23,24 @@
         <servlet-class>servlet.RegisterServlet</servlet-class>
     </servlet>
 
+    <servlet-mapping>
+        <servlet-name>AnswerQuestionServlet</servlet-name>
+        <url-pattern>/AnswerQuestion</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AnswerQuestionServlet</servlet-name>
+        <servlet-class>servlet.AnswerQuestionServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>CreateQuestionServlet</servlet-name>
+        <url-pattern>/CreateQuestion</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CreateQuestionServlet</servlet-name>
+        <servlet-class>servlet.CreateQuestionServlet</servlet-class>
+    </servlet>
+
 </web-app>

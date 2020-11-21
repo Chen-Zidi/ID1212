@@ -1,6 +1,8 @@
 package servlet;
 
+import DAO.QuestionDAO;
 import DAO.UserDAO;
+import bean.Question;
 import bean.User;
 
 import javax.servlet.ServletException;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(name = "LoginServlet")
 public class LoginServlet extends HttpServlet {
@@ -23,10 +26,16 @@ public class LoginServlet extends HttpServlet {
         User user = userDAO.login(username,password);
 
         if (user != null) {
-            //将用户的对象放到session中
+            //put user into session
             request.getSession().setAttribute("user", user);
-            //转发到result.jsp页面
-            request.getRequestDispatcher("result.jsp").forward(request, response);
+            //redirect to the result page
+            //request.getRequestDispatcher("result.jsp").forward(request, response);
+
+            QuestionDAO qd = new QuestionDAO();
+            List<Question> questionList = qd.getAllQuestions();
+            request.setAttribute("questionList", questionList);
+            request.getRequestDispatcher("question.jsp").forward(request, response);
+
             /**
              response.sendRedirect(url)跳转到指定的URL地址，产生一个新的request，所以要传递参数只有在url后加参
              数，如：
@@ -36,7 +45,7 @@ public class LoginServlet extends HttpServlet {
              sendRedirect()会新建request对象，所以上一个request中的数据会丢失。
              */
         }else {
-            //登录失败
+            //login error
             request.setAttribute("info","Error");
             request.getRequestDispatcher("result.jsp").forward(request, response);
         }
