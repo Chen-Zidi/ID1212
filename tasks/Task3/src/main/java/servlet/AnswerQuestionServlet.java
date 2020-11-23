@@ -22,7 +22,7 @@ public class AnswerQuestionServlet extends HttpServlet {
         QuestionDAO qd = new QuestionDAO();
         List<Question> questionList = qd.getAllQuestions();
 
-        System.out.println("question list length"+questionList.size());
+//        System.out.println("question list length"+questionList.size());
 
         List<String> answerList = new ArrayList<String>();
 
@@ -32,24 +32,65 @@ public class AnswerQuestionServlet extends HttpServlet {
             String answer = "";
             String identifier = "question" + Integer.toString(questionList.get(i).getId());
             String[] result = request.getParameterValues(identifier);
+            String answerResult = "";
+ //           System.out.println("identifier" + identifier);
 
-            System.out.println("identifier" + identifier);
-
-            System.out.println(result);
+  //          System.out.println(result);
 
             //reformat the answers
             for(String s : result){
                 if(answer != ""){
-                    answer = answer + ", " + s;
+                    answer = answer + "," + s;
                 }else{
                     answer = answer + s;
                 }
 
-               //System.out.println(s);
+
             }
-            System.out.println(answer);
-            answerList.add(answer);
+            System.out.println(answer.trim());
+            System.out.println(questionList.get(i).getCorrectAnswer().trim());
+            String[] a = answer.trim().split(",");
+            String[] ca = questionList.get(i).getCorrectAnswer().trim().split(",");
+            System.out.println(a);
+            System.out.println(ca);
+            System.out.println(a.length);
+            System.out.println(ca.length);
+
+            List<Boolean> exist = new ArrayList<Boolean>();
+
+            boolean correct = true;
+
+            if(a.length == ca.length){
+                for(int j = 0; j< a.length;j++){
+                    for(int k = 0; k< ca.length ; k++){
+                        if(a[j].equals(ca[k])){
+                            exist.add(true);
+                        }
+                    }
+                }
+
+                if(exist.size() == a.length){
+                    correct = true;
+                }else{
+                    correct = false;
+
+                }
+            }else{
+                correct = false;
+            }
+
+
+            if(correct){
+                answerResult = "correct";
+            }else{
+                answerResult = "false, the correct answer are: " + questionList.get(i).getCorrectAnswer();
+            }
+
+
+            answerList.add(answerResult);
         }
+
+
         request.setAttribute("questionList", questionList);
         request.setAttribute("answerList", answerList);
         request.getRequestDispatcher("answer.jsp").forward(request, response);

@@ -34,6 +34,7 @@
     Choice: <input type="text" name="choice2"><br>
     Choice: <input type="text" name="choice3"><br>
     Choice: <input type="text" name="choice4"><br>
+    Correct answer: <input type="text" name="correctAnswer"><br>
 <input type="submit" value="submit"><input type="reset" value="reset">
 </form>
 </body>

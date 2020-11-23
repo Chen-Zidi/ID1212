@@ -23,10 +23,10 @@ public class CreateQuestionServlet extends HttpServlet {
         String choice2 = request.getParameter("choice2");
         String choice3 = request.getParameter("choice3");
         String choice4 = request.getParameter("choice4");
-
+        String ca = request.getParameter("correctAnswer");
 
         //List<Question> qList = new ArrayList<Question>();
-        Question q = new Question(question,choice0,choice1,choice2,choice3,choice4);
+        Question q = new Question(question,choice0,choice1,choice2,choice3,choice4,ca.trim());
         //qList.add(q);
 
         QuestionDAO qd = new QuestionDAO();

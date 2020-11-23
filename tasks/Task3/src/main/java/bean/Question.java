@@ -2,6 +2,8 @@ package bean;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Question implements Serializable {
@@ -14,16 +16,19 @@ public class Question implements Serializable {
     private String choice2;
     private String choice3;
     private String choice4;
+    private String correctAnswer;
 
     public Question(){ }
 
-    public Question(String question, String choice0, String choice1, String choice2, String choice3, String choice4) {
+    public Question(String question, String choice0, String choice1, String choice2, String choice3, String choice4,
+                    String correctAnswer) {
         this.question = question;
         this.choice0 = choice0;
         this.choice1 = choice1;
         this.choice2 = choice2;
         this.choice3 = choice3;
         this.choice4 = choice4;
+        this.correctAnswer = correctAnswer;
     }
 
     public int getId() {
@@ -68,6 +73,14 @@ public class Question implements Serializable {
 
     public void setChoice3(String choice3) {
         this.choice3 = choice3;
+    }
+
+    public String getCorrectAnswer() {
+        return correctAnswer;
+    }
+
+    public void setCorrectAnswer(String correctAnswer) {
+        this.correctAnswer = correctAnswer;
     }
 
     public String getChoice4() {
