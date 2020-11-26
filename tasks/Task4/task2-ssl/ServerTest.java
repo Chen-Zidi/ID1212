@@ -1,22 +1,23 @@
 import javax.net.ssl.*;
 import java.io.*;
+
 import java.security.KeyStore;
 
-
-public class Server {
+public class ServerTest {
 
     static final int PORT = 443;
 
     public static void main(String[] args) throws Exception {
         SSLServerSocketFactory factory;
         KeyStore ks;
-        String password = "changeit";
+//        String password = "changeit";
+        String password = "111111";
         KeyManagerFactory kmf;
         SSLContext ctx;
 
-        ks = KeyStore.getInstance(KeyStore.getDefaultType());
+        ks = KeyStore.getInstance("JKS");
 //        ks.load(new FileInputStream("D:\\jdk-12\\jre\\lib\\security\\cacerts"), password.toCharArray());
-        ks.load(new FileInputStream("D:/server.keystore"), password.toCharArray());
+        ks.load(new FileInputStream("D:\\jdk-12\\bin\\myserver.jks"), password.toCharArray());
 
 //        SSLContext ctx = SSLContext.getInstance("SSL");
 //        KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
@@ -45,20 +46,42 @@ public class Server {
         System.out.println("______________________________");
         for(int i = 0; i < serverSocket.getEnabledCipherSuites().length; i++)
             System.out.println(serverSocket.getEnabledCipherSuites()[i]);
-
-
-
         int counter = 0;
+        //need to be in threads in later
+//        while (true) {
+//            //get connected
+//            System.out.println("Waiting for client...");
+//            socket = (SSLSocket) serverSocket.accept();
+//            ServerThread serverThread = new ServerThread(socket, counter);
+//            serverThread.start();
+//            counter++;
+//        }
 
-        while (true) {
-            //get connected
-            System.out.println("Waiting for client...");
-            socket = (SSLSocket) serverSocket.accept();
-            ServerThread serverThread = new ServerThread(socket, counter);
-            serverThread.start();
-            counter++;
-        }
 
+        System.out.println("Waiting for client...");
+        socket = (SSLSocket) serverSocket.accept();
+
+        System.out.println(socket.getRemoteSocketAddress());
+
+
+        BufferedReader socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        DataOutputStream socketOut = new DataOutputStream(socket.getOutputStream());
+
+//        String s = socketIn.readLine();
+//
+//        System.out.println("Client Message: " + s);
+
+
+            socketOut.write("server received call".getBytes());
+            socketOut.flush();
+
+
+
+
+
+
+        socket.close();
+        serverSocket.close();
 
     }
 

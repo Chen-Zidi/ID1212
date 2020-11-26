@@ -1,3 +1,4 @@
+import javax.net.ssl.SSLSocket;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -6,7 +7,7 @@ import java.nio.file.Paths;
 import java.util.StringTokenizer;
 
 public class ServerThread extends Thread {
-    Socket socket;
+    SSLSocket socket;
     Guess guess;
     BufferedReader request;
     int count = -1;
@@ -19,7 +20,7 @@ public class ServerThread extends Thread {
     int id;
 
 
-    public ServerThread(Socket socket, int id) {
+    public ServerThread(SSLSocket socket, int id) {
         this.socket = socket;
         this.id = id;
     }
@@ -31,14 +32,16 @@ public class ServerThread extends Thread {
             //receive http request
             OutputStream outputStream = socket.getOutputStream();
             InputStream inputStream = socket.getInputStream();
+            System.out.println("get intput and output stream" + inputStream);
+
             request = new BufferedReader(new InputStreamReader(inputStream));
             String str = request.readLine();
 
             // If this is a favicon request from browser
             if (str.contains("favicon.ico")) {
                 //Read favicon.ico to bytes
-                byte[] favicon = Files.readAllBytes(Paths.get("tasks", "Task2", "favicon.ico"));
-                String header = "HTTP/1.1 200 OK\nAccess-Control-Allow-Origin: *\nContent-Type: image/ico\nContent-Length: " + favicon.length + "\r\n\r\n";
+                byte[] favicon = Files.readAllBytes(Paths.get("tasks", "Task4","task2-ssl", "favicon.ico"));
+                String header = "HTTPS/1.1 200 OK\nAccess-Control-Allow-Origin: *\nContent-Type: image/ico\nContent-Length: " + favicon.length + "\r\n\r\n";
                 outputStream.write(header.getBytes(StandardCharsets.UTF_8));
                 outputStream.write(favicon);
             }
@@ -106,7 +109,7 @@ public class ServerThread extends Thread {
             //if it is a get request, give the start page
             if (method.equals("GET")) {
                 //read the html file
-                FileReader fileReader = new FileReader("./tasks/Task2/GuessGamePage.html");
+                FileReader fileReader = new FileReader("./tasks/Task4/task2-ssl/GuessGamePage.html");
                 BufferedReader bufferedReader = new BufferedReader(fileReader);
                 while (bufferedReader.ready()) {
                     htmlContent += bufferedReader.readLine();
@@ -123,7 +126,7 @@ public class ServerThread extends Thread {
                 FileReader fileReader;
                 String result = guess.compare(guessNumber);
                 if (result.equals("equal")) {//if the guess number is right
-                    fileReader = new FileReader("./tasks/Task2/GuessRight.html");
+                    fileReader = new FileReader("./tasks/Task4/task2-ssl/GuessRight.html");
                     BufferedReader bufferedReader = new BufferedReader(fileReader);
                     while (bufferedReader.ready()) {
                         htmlContent += bufferedReader.readLine();
@@ -137,7 +140,7 @@ public class ServerThread extends Thread {
                     guess = new Guess();
 
                 } else if (result.equals("higher")) {//if the gues number is higher
-                    fileReader = new FileReader("./tasks/Task2/GuessHigher.html");
+                    fileReader = new FileReader("./tasks/Task4/task2-ssl/GuessHigher.html");
                     BufferedReader bufferedReader = new BufferedReader(fileReader);
                     while (bufferedReader.ready()) {
                         htmlContent += bufferedReader.readLine();
@@ -148,7 +151,7 @@ public class ServerThread extends Thread {
                     fileReader.close();
 
                 } else {//if the guess number is lower
-                    fileReader = new FileReader("./tasks/Task2/GuessLower.html");
+                    fileReader = new FileReader("./tasks/Task4/task2-ssl/GuessLower.html");
                     BufferedReader bufferedReader = new BufferedReader(fileReader);
                     while (bufferedReader.ready()) {
                         htmlContent += bufferedReader.readLine();
@@ -172,13 +175,16 @@ public class ServerThread extends Thread {
                     "Set-Cookie: id=" + id + "\r\n" +
                     "\r\n" + htmlContent + "\r\n";
 
+
+
             //send the response
             outputStream.write(page.getBytes());
             outputStream.flush();
 
 
-            socket.shutdownInput();
-            socket.shutdownOutput();
+
+//            socket.shutdownInput();
+//            socket.shutdownOutput();
             socket.close();
 
         } catch (IOException e) {
