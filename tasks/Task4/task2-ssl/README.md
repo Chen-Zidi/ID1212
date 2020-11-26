@@ -1,17 +1,26 @@
-# Task 2, HTTPServer / HTTPClient
-## HTTPServer / HTTPClient
+# Task 4, HTTPServer / HTTPClient with SSL socket
 
-Your task is to write a guessing game with sockets where the dialogue will be according to the following (when you connect with your webbrowser):
+##generate certificate and key store using keytool
+Find jdk folder => go to bin folder => there is a keytool.exe
 
-Welcome to the number guess game.
-I'm thinking of a number between 1 and 100. Whats your guess? 50
-That's too low. Please guess higher: 75
-That' too high. Please guess lower: 67
-You made it in 4 guess(es).
+First you should use command line to the bin folder, then type in
 
-Requirements of the program: It should consist of at least two classes, a serverclass and a guessclass where the former handles the requests from and the responses to the server and the latter handles the gamelogic.
+`
+keytool -genkey -alias server -keypass changeit -keyalg RSA -keysize 1024 -validity 365 -keystore d:/server.keystore -storepass changeit
+`
+to generate a server certificate file.
+A few things that you can change:
 
-**Note: Each new client connecting should lead to a new instance of the game by adding a "Set-Cookie" field in the http-response.**
+server: alias
 
-## Extra assignment
-Use the java.net.HttpURLConnection class to simulate a browser and play the game 100 times and present the average number of guesses.
+changeit:password
+
+d:/server.keystore: file name and dir
+
+Then you should import this file server.keystore into browser eg. Firefox Options=>Privacy and security=>Certificates=>View certificates=>your certificate=>import 
+
+You can also use the server.keystore in the current folder, but you need to change the address in the program Server.java and also import it in the browser.
+
+If you only want one-way verification, then this is enough.
+
+If you want two-way verifiaction, please check: https://blog.csdn.net/weixin_30735745/article/details/97370781
