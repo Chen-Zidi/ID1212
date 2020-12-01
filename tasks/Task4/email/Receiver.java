@@ -34,6 +34,7 @@ public class Receiver implements Runnable {
                 String text = bufferedReader.readLine();
                 if (text != null) {
                     System.out.println("SERVER: " + text);
+                    thisThread.sleep(100);
                 }
             }
         } catch (Exception e) {
